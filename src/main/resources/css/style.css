@@ -3,12 +3,11 @@
 }
 
 .map svg {
-  margin-top: -20px;
   position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .map img {
@@ -22,7 +21,7 @@
   fill: none; 
   pointer-events: all; 
   cursor: pointer; 
-  stroke: #000000;
+  stroke: #ffffff;
   stroke-width: 1px;
   transition: transform 0.2s ease;
   transform-origin: center center;
@@ -30,12 +29,12 @@
 
 .gMap:hover path {
   animation: hoverElement 2s linear infinite;
-  transform: scale(1.2) translateX(calc(-3%));
+  transform: scale(1.05) translateX(calc(-3%));
 }
 
 .map svg path:hover {
   animation: hoverElement 2s linear infinite;
-  transform: scale(1.2) translateX(calc(-3%));
+  transform: scale(1.05) translateX(calc(-3%));
 }
 
 @keyframes hoverElement {
