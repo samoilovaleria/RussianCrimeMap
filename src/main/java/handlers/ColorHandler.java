@@ -5,10 +5,9 @@ import java.util.Map;
 
 public class ColorHandler {
 
-    final private static int groupCount = 6;
-    final private Map<String, Integer> groups;
-
     private int maxRegionValue = 80000;
+    final private static int groupCount = 8;
+    final private Map<String, Integer> groups;
 
     public ColorHandler() {
         Map<String, Integer> colors = new HashMap<>();
@@ -117,7 +116,6 @@ public class ColorHandler {
             if (group > groupCount) group = groupCount;
             groups.put(region, group);
         }
-        System.out.println(groups);
 
     }
 

@@ -15,6 +15,7 @@
   margin-bottom: 0px;
   width: 100%;
   height: 100%;
+  opacity: 0;
 }
 
 .map svg path {
@@ -29,12 +30,10 @@
 
 .gMap:hover path {
   animation: hoverElement 2s linear infinite;
-  transform: scale(1.05) translateX(calc(-3%));
 }
 
 .map svg path:hover {
   animation: hoverElement 2s linear infinite;
-  transform: scale(1.05) translateX(calc(-3%));
 }
 
 @keyframes hoverElement {
@@ -45,6 +44,52 @@
       stroke: #fc0000;
   }
   100% {
-      stroke: #000000; 
+      stroke: #000000;
   }
+}
+
+#Krasnodar {
+  clip-path: url(#Adygey);
+}
+
+.legend {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.color-bar {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.color {
+  width: 20px;
+  height: 20px;
+}
+
+.label {
+  font-size: 12px;
+  color: #555555;
+}
+
+.map-description {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  color: #555555;
+}
+
+.map-description h2 {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
+.map-description p {
+  font-size: 14px;
 }
