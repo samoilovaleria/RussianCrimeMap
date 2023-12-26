@@ -32,15 +32,24 @@ window.onload = async function () {
 function handleMouseOver(event) {
     const id = event.target.getAttribute('id');
     const region = event.target;
+    region.parentNode.appendChild(region);
 
-    if (id === 'Sevastopol' || id === 'Moskva' || id === 'City of St. Petersburg') {
-      region.style.transform = 'scale(1.005)';
+    if (
+    id === 'Sevastopol'||
+    id === 'Moskva' ||
+    id === 'City of St. Petersburg' ||
+    id === 'Moskovsskaya' ||
+    id === 'Kaliningrad' ||
+    id === 'Crimea') {
+        region.style.transform = 'scale(1.005)';
+    } else if (id === 'Leningrad'){
+        region.style.transform = 'scale(1.002)';
     } else {
-      region.style.transform = 'scale(1.015)';
+      region.style.transform = 'scale(1.02)';
     }
 
-    region.parentNode.appendChild(region);
-    nameDisplay.textContent = id;
+    let dataName = event.target.getAttribute('data-name');
+    nameDisplay.textContent = dataName;
 }
 
 // Обработчик события ухода курсора с региона

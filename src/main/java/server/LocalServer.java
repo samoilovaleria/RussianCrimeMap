@@ -20,10 +20,10 @@ import com.google.gson.*;
 
 public class LocalServer {
     private static final String HTML_FILE_PATH = "src/main/html/main_page.html";
-    private static final String CSS_FILE_PATH = "src/main/css/";
-    private static final String JS_FILE_PATH = "src/main/js/";
+    private static final String CSS_FILE_PATH = "src/main/resources/css/";
+    private static final String JS_FILE_PATH = "src/main/resources/js/";
     private static final String RESOURCES_DIR = "src/main/resources/";
-    private static final String IMAGES_FOLDER_PATH = "src/main/resources/images/";
+    private static final String IMAGES_FOLDER_PATH = "src/main/resources/img/";
 
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -42,11 +42,15 @@ public class LocalServer {
             Path filePath;
             if (requestPath.equals("/")) {
                 filePath = Paths.get(HTML_FILE_PATH);
-            } else if (requestPath.contains("/style.css")) {
-                filePath = Paths.get(CSS_FILE_PATH);
-            } else if (requestPath.contains("/images/")) {
+            } else if (requestPath.contains("css")) {
+                String cssName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
+                filePath = Paths.get(CSS_FILE_PATH, cssName);
+            } else if (requestPath.contains("/img/")) {
                 String imageName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
                 filePath = Paths.get(IMAGES_FOLDER_PATH, imageName);
+            } else if (requestPath.contains("js")) {
+                String jsName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
+                filePath = Paths.get(JS_FILE_PATH, jsName);
             } else {
                 return;
             }

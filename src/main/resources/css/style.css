@@ -1,95 +1,151 @@
-.map {
-  position: relative;
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+:root {
+	--index: calc(1vw + 1vh);
+	--color-text: #f4efec;
+	--color-border: #3c3c3c;
+	--gallery-gap: calc(var(--index) * 1)
+}
+@font-face {
+	font-family: disketMono-bold;
+	src: url(../fonts/Disket-Mono-Bold.ttf);
+}
+@font-face {
+	font-family: jupiteroid-regular;
+	src: url(../fonts/Jupiteroid-Regular.ttf);
+}
+body {
+	background-image: url(../img/background.png);
+	color: var(--color-text);
+	overflow-x: hidden;
+	font-family: jupiteroid-regular;
+}
+h1 {
+	font-family: disketMono-bold;
+}
+.main-titile-img {
+	width: calc(var(--index) * 36);
+	position: absolute;
+	left: 40vw;
+	top: 1.4vh;
+	z-index: -1;
+}
+.main-title-text {
+	font-size: calc(var(--index) * 5);
+	-webkit-text-stroke: 1px var(--color-border);
+	position: absolute;
+	width: min-content;
+	padding: 0 4.5vw;
+	bottom: 15vh;
+	line-height: .9;
+}
+.preview-information {
+	display: flex;
+	margin-top: 110vh;
+	margin-left: 7vh;
+	margin-right: 7vh;
+}
+.preview-information > * {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	flex-direction: column;
+}
+.preview-information-item {
+	font-size: calc(var(--index) * 1.2);
+	width: calc(var(--index) * 24);
+}
+.preview-information-img {
+	max-width: calc(var(--index) * 27);
+	margin-bottom: var(--gallery-gap);
+	max-height: 80vh;
+}
+.preview-information-left {
+	margin-top: calc(var(--gallery-gap) * -1.75);
 }
 
-.map svg {
+/* Стили для карты */
+.map {
+    margin-top: -5vh;
+}
+.map-object {
+	position: relative;
+}
+.map-object svg {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
 }
-
-.map img {
+.map-object img {
   margin-top: 0px;
   margin-bottom: 0px;
   width: 100%;
   height: 100%;
   opacity: 0;
 }
-
-.map svg path {
-  fill: none; 
-  pointer-events: all; 
-  cursor: pointer; 
+.map-object svg path {
+  fill: none;
+  pointer-events: all;
+  cursor: pointer;
   stroke: #ffffff;
-  stroke-width: 1px;
+  stroke-width: 0.7px;
   transition: transform 0.2s ease;
   transform-origin: center center;
 }
-
 .gMap:hover path {
   animation: hoverElement 2s linear infinite;
 }
-
-.map svg path:hover {
+.map-object svg path:hover {
   animation: hoverElement 2s linear infinite;
 }
-
 @keyframes hoverElement {
   0% {
       stroke: #000000;
   }
   50% {
-      stroke: #fc0000;
+      stroke: #f015d3;
   }
   100% {
       stroke: #000000;
   }
 }
-
-#Krasnodar {
-  clip-path: url(#Adygey);
-}
-
-.legend {
+.map-legend {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  left: 95vw;
+  top: 185vw;
   display: flex;
   justify-content: flex-end;
   align-items: center;
 }
-
 .color-bar {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
+  gap: calc(var(--index) * 0.25);
 }
-
 .color {
-  width: 20px;
-  height: 20px;
+  width: calc(var(--index) * 0.85);
+  height: calc(var(--index) * 0.85);
 }
-
 .label {
-  font-size: 12px;
-  color: #555555;
+  font-size: calc(var(--index) * 0.6);;
 }
-
 .map-description {
   position: absolute;
-  bottom: 20px;
-  left: 20px;
-  color: #555555;
+  left: 5vw;
+  top: 238vw;
 }
 
 .map-description h2 {
-  font-size: 20px;
-  margin-bottom: 10px;
+  font-size: calc(var(--index));;
+  margin-bottom: 1vh;
 }
 
 .map-description p {
-  font-size: 14px;
+  font-size: calc(var(--index) * 0.7);;
 }
