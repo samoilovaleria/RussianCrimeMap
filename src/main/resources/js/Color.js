@@ -58,3 +58,56 @@ function handleMouseOut(event) {
   region.style.transform = 'scale(1)';
   nameDisplay.textContent = 'Российская Федерация';
 }
+
+// Плавный скролл
+
+gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+
+if (ScrollTrigger.isTouch !== 1) {
+
+	ScrollSmoother.create({
+		wrapper: '.wrapper',
+		content: '.content',
+		smooth: 1,
+		effects: true
+	})
+
+	gsap.fromTo('.main-title-section', { opacity: 1 }, {
+		opacity: 0,
+		scrollTrigger: {
+			trigger: '.main-title-section',
+			start: 'center',
+			end: '820',
+			scrub: true
+		}
+	})
+
+	let itemsL = gsap.utils.toArray('.preview-information-left .object')
+
+	itemsL.forEach(item => {
+		gsap.fromTo(item, { opacity: 0, x: -50 }, {
+			opacity: 1, x: 0,
+			scrollTrigger: {
+				trigger: item,
+				start: '-850',
+				end: '-100',
+				scrub: true
+			}
+		})
+	})
+
+	let itemsR = gsap.utils.toArray('.preview-information-right .object')
+
+	itemsR.forEach(item => {
+		gsap.fromTo(item, { opacity: 0, x: 50 }, {
+			opacity: 1, x: 0,
+			scrollTrigger: {
+				trigger: item,
+				start: '-750',
+				end: 'top',
+				scrub: true
+			}
+		})
+	})
+
+}

@@ -16,19 +16,21 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+
 import com.google.gson.*;
 
 public class LocalServer {
     private static final String HTML_FILE_PATH = "src/main/html/main_page.html";
     private static final String CSS_FILE_PATH = "src/main/resources/css/";
     private static final String JS_FILE_PATH = "src/main/resources/js/";
-    private static final String RESOURCES_DIR = "src/main/resources/";
     private static final String IMAGES_FOLDER_PATH = "src/main/resources/img/";
+    private static final String FONTS_FOLDER_PATH = "src/main/resources/fonts/";
+    private static final String GSAP_FOLDER_PATH = "src/main/resources/libs/gsap/";
 
     public static void main(String[] args) throws IOException {
         HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
 
-        server.createContext("/static", new StaticFileHandler());
+//        server.createContext("/..", new StaticFileHandler());
         server.createContext("/api", new ApiHandler());
         server.createContext("/", new MyHandler());
         server.setExecutor(null);
@@ -37,7 +39,7 @@ public class LocalServer {
     }
 
     static class MyHandler implements HttpHandler {
-        public void handle(com.sun.net.httpserver.HttpExchange httpExchange) throws IOException {
+        public void handle(HttpExchange httpExchange) throws IOException {
             String requestPath = httpExchange.getRequestURI().getPath();
             Path filePath;
             if (requestPath.equals("/")) {
@@ -48,6 +50,12 @@ public class LocalServer {
             } else if (requestPath.contains("/img/")) {
                 String imageName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
                 filePath = Paths.get(IMAGES_FOLDER_PATH, imageName);
+            } else if (requestPath.contains("/gsap/")) {
+                String libName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
+                filePath = Paths.get(GSAP_FOLDER_PATH, libName);
+            } else if (requestPath.contains("/fonts/")) {
+                String fontName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
+                filePath = Paths.get(FONTS_FOLDER_PATH, fontName);
             } else if (requestPath.contains("js")) {
                 String jsName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
                 filePath = Paths.get(JS_FILE_PATH, jsName);
@@ -62,52 +70,12 @@ public class LocalServer {
         }
     }
 
-
-    static class StaticFileHandler implements HttpHandler {
-
-        @Override
-        public void handle(HttpExchange exchange) throws IOException {
-            String filePath = exchange.getRequestURI().getPath();
-            File file = getFile(filePath);
-
-            if (file == null) {
-                String response = "Error 404 File not found.";
-                exchange.sendResponseHeaders(404, response.length());
-                OutputStream output = exchange.getResponseBody();
-                output.write(response.getBytes());
-                output.flush();
-                output.close();
-            } else {
-                exchange.sendResponseHeaders(200, 0);
-                OutputStream output = exchange.getResponseBody();
-                FileInputStream fs = new FileInputStream(file);
-                final byte[] buffer = new byte[0x10000];
-                int count = 0;
-                while ((count = fs.read(buffer)) >= 0) {
-                    output.write(buffer, 0, count);
-                }
-                output.flush();
-                output.close();
-                fs.close();
-            }
-        }
-
-        private File getFile(String filePath) {
-            String fileName = filePath.replace("/static/", "");
-            File file = new File(RESOURCES_DIR + fileName);
-            if (file.exists() && !file.isDirectory()) {
-                return file;
-            }
-            return null;
-        }
-    }
-
     static class ApiHandler implements HttpHandler {
         private static final String HEADER_CONTENT_TYPE = "Content-Type";
         private static final Charset CHARSET = StandardCharsets.UTF_8;
         private static final int STATUS_OK = 200;
 
-        public void handle(com.sun.net.httpserver.HttpExchange httpExchange) throws IOException {
+        public void handle(HttpExchange httpExchange) throws IOException {
             String requestPath = httpExchange.getRequestURI().getPath();
             final Headers headers = httpExchange.getResponseHeaders();
 
@@ -129,4 +97,57 @@ public class LocalServer {
             os.close();
         }
     }
+//
+//
+//    static class StaticFileHandler implements HttpHandler {
+//
+//        @Override
+//        public void handle(HttpExchange exchange) throws IOException {
+//            String filePath = exchange.getRequestURI().getPath();
+//            File file = getFile(filePath);
+//
+//            if (file == null) {
+//                String response = "Error 404 File not found.";
+//                exchange.sendResponseHeaders(404, response.length());
+//                OutputStream output = exchange.getResponseBody();
+//                output.write(response.getBytes());
+//                output.flush();
+//                output.close();
+//            } else {
+//                exchange.sendResponseHeaders(200, 0);
+//                OutputStream output = exchange.getResponseBody();
+//                FileInputStream fs = new FileInputStream(file);
+//                final byte[] buffer = new byte[0x10000];
+//                int count = 0;
+//                while ((count = fs.read(buffer)) >= 0) {
+//                    output.write(buffer, 0, count);
+//                }
+//                output.flush();
+//                output.close();
+//                fs.close();
+//            }
+//        }
+//
+//        private File getFile(String requestPath) {
+//            String fileName = null;
+//            if (requestPath.contains("css")) {
+//                String cssName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
+//                fileName = CSS_FILE_PATH + cssName;
+//            } else if (requestPath.contains("/img/")) {
+//                String imageName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
+//                fileName = IMAGES_FOLDER_PATH + imageName;
+//            } else if (requestPath.contains("/gsap/")) {
+//                String gsapName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
+//                fileName = GSAP_FOLDER_PATH + gsapName;
+//            } else if (requestPath.contains("js")) {
+//                String jsName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
+//                fileName = JS_FILE_PATH + jsName;
+//            }
+//            File file = new File(fileName);
+//            if (file.exists() && !file.isDirectory()) {
+//                return file;
+//            }
+//            return null;
+//        }
+//    }
 }
