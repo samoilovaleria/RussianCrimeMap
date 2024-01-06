@@ -1,5 +1,6 @@
-package handlers;
+package dbConnection;
 
+import handlers.DatabaseHandler;
 import hidden.Constants;
 
 import java.sql.PreparedStatement;
@@ -8,25 +9,24 @@ import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
-public class ColorHandler extends Constants {
+public class DatabaseConnectionTest extends Constants {
 
-    private int maxRegionValue = 80000;
+    static private int maxRegionValue = 80000;
     final private static int groupCount = 8;
-    final private Map<String, Integer> groups_2011 = new HashMap<>();
-    final private Map<String, Integer> groups_2012 = new HashMap<>();
-    final private Map<String, Integer> groups_2013 = new HashMap<>();
-    final private Map<String, Integer> groups_2014 = new HashMap<>();
-    final private Map<String, Integer> groups_2015 = new HashMap<>();
-    final private Map<String, Integer> groups_2016 = new HashMap<>();
-    final private Map<String, Integer> groups_2017 = new HashMap<>();
-    final private Map<String, Integer> groups_2018 = new HashMap<>();
-    final private Map<String, Integer> groups_2019 = new HashMap<>();
-    final private Map<String, Integer> groups_2020 = new HashMap<>();
-    final private Map<String, Integer> groups_2021 = new HashMap<>();
-    final private Map<String, Integer> groups_2022 = new HashMap<>();
+    static final private Map<String, Integer> groups_2011 = new HashMap<>();
+    static final private Map<String, Integer> groups_2012 = new HashMap<>();
+    static final private Map<String, Integer> groups_2013 = new HashMap<>();
+    static final private Map<String, Integer> groups_2014 = new HashMap<>();
+    static final private Map<String, Integer> groups_2015 = new HashMap<>();
+    static final private Map<String, Integer> groups_2016 = new HashMap<>();
+    static final private Map<String, Integer> groups_2017 = new HashMap<>();
+    static final private Map<String, Integer> groups_2018 = new HashMap<>();
+    static final private Map<String, Integer> groups_2019 = new HashMap<>();
+    static final private Map<String, Integer> groups_2020 = new HashMap<>();
+    static final private Map<String, Integer> groups_2021 = new HashMap<>();
+    static final private Map<String, Integer> groups_2022 = new HashMap<>();
 
-
-    public ColorHandler() throws SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws SQLException, ClassNotFoundException {
         String query = "SELECT * FROM " + CRIMES_TABLE + ";";
         PreparedStatement statement = DatabaseHandler.getInstance().prepareStatement(query);
         ResultSet result = statement.executeQuery(query);
@@ -130,53 +130,7 @@ public class ColorHandler extends Constants {
             int group = regionValue == 0 ? 0 : Math.min((int) Math.ceil(regionValue / groupSize) + 1, groupCount);
             groups_2022.put(region, group);
         }
+
     }
 
-    public Map<String, Integer> getGroups_2011() {
-        return groups_2011;
-    }
-
-    public Map<String, Integer> getGroups_2012() {
-        return groups_2012;
-    }
-
-    public Map<String, Integer> getGroups_2013() {
-        return groups_2013;
-    }
-
-    public Map<String, Integer> getGroups_2014() {
-        return groups_2014;
-    }
-
-    public Map<String, Integer> getGroups_2015() {
-        return groups_2015;
-    }
-
-    public Map<String, Integer> getGroups_2016() {
-        return groups_2016;
-    }
-
-    public Map<String, Integer> getGroups_2017() {
-        return groups_2017;
-    }
-
-    public Map<String, Integer> getGroups_2018() {
-        return groups_2018;
-    }
-
-    public Map<String, Integer> getGroups_2019() {
-        return groups_2019;
-    }
-
-    public Map<String, Integer> getGroups_2020() {
-        return groups_2020;
-    }
-
-    public Map<String, Integer> getGroups_2021() {
-        return groups_2021;
-    }
-
-    public Map<String, Integer> getGroups_2022() {
-        return groups_2022;
-    }
 }

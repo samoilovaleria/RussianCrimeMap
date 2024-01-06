@@ -16,6 +16,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.sql.SQLException;
 
 import com.google.gson.*;
 
@@ -82,9 +83,14 @@ public class LocalServer {
 
             String responseBody;
             if (requestPath.contains("colors")) {
-                ColorHandler colorHandler = new ColorHandler();
+                ColorHandler colorHandler = null;
+                try {
+                    colorHandler = new ColorHandler();
+                } catch (SQLException | ClassNotFoundException e) {
+                    throw new RuntimeException(e);
+                }
                 Gson gson = new Gson();
-                responseBody = gson.toJson(colorHandler.getGroups());
+                responseBody = gson.toJson(colorHandler.getGroups_2022());
             } else {
                 return;
             }
