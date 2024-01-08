@@ -5,11 +5,9 @@ import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 import handlers.ColorHandler;
+import handlers.FeedbackHandler;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.InetSocketAddress;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -27,6 +25,7 @@ public class LocalServer {
 	private static final String IMAGES_FOLDER_PATH = "src/main/resources/img/";
 	private static final String FONTS_FOLDER_PATH = "src/main/resources/fonts/";
 	private static final String GSAP_FOLDER_PATH = "src/main/resources/libs/gsap/";
+	private static ColorHandler colorHandler;
 
 	public static void main(String[] args) throws IOException {
 		HttpServer server = HttpServer.create(new InetSocketAddress(8000), 0);
@@ -36,12 +35,18 @@ public class LocalServer {
 		server.setExecutor(null);
 		server.start();
 		System.out.println("Server started on http://localhost:8000");
+
+		try {
+			colorHandler = new ColorHandler();
+		} catch (SQLException | ClassNotFoundException e) {
+			throw new RuntimeException(e);
+		}
 	}
 
 	static class MyHandler implements HttpHandler {
 		public void handle(HttpExchange httpExchange) throws IOException {
 			String requestPath = httpExchange.getRequestURI().getPath();
-			Path filePath;
+			Path filePath = null;
 			if (requestPath.equals("/")) {
 				filePath = Paths.get(HTML_FILE_PATH);
 			} else if (requestPath.contains("css")) {
@@ -59,6 +64,46 @@ public class LocalServer {
 			} else if (requestPath.contains("js")) {
 				String jsName = requestPath.substring(requestPath.lastIndexOf("/") + 1);
 				filePath = Paths.get(JS_FILE_PATH, jsName);
+			} else if (requestPath.equals("/feedback") && httpExchange.getRequestMethod().equalsIgnoreCase("POST")) {
+				InputStreamReader isr = new InputStreamReader(httpExchange.getRequestBody(), "UTF-8");
+				BufferedReader br = new BufferedReader(isr);
+				StringBuilder sb = new StringBuilder();
+				String line;
+				while ((line = br.readLine()) != null) {
+					sb.append(line);
+				}
+				br.close();
+
+				String formData = sb.toString();
+				String[] formDataArray = formData.split("&");
+				String name = "";
+				String city = "";
+				String message = "";
+
+				for (String item : formDataArray) {
+					String[] keyValue = item.split("=");
+					String key = keyValue[0];
+					String value = keyValue[1];
+
+					if (key.equals("name")) {
+						name = value;
+					} else if (key.equals("city")) {
+						city = value;
+					} else if (key.equals("message")) {
+						message = value;
+					}
+				}
+
+				FeedbackHandler feedbackHandler = new FeedbackHandler();
+				feedbackHandler.saveFeedback(name, city, message);
+
+				String redirectScript = "<script>location.replace(document.referrer);</script>";
+				byte[] redirectScriptBytes = redirectScript.getBytes(StandardCharsets.UTF_8);
+
+				httpExchange.sendResponseHeaders(200, redirectScriptBytes.length);
+				OutputStream os = httpExchange.getResponseBody();
+				os.write(redirectScriptBytes);
+				os.close();
 			} else {
 				return;
 			}
@@ -80,13 +125,8 @@ public class LocalServer {
 			final Headers headers = httpExchange.getResponseHeaders();
 
 			String responseBody = null;
+
 			if (requestPath.contains("colors")) {
-				ColorHandler colorHandler = null;
-				try {
-					colorHandler = new ColorHandler();
-				} catch (SQLException | ClassNotFoundException e) {
-					throw new RuntimeException(e);
-				}
 				Gson gson = new Gson();
 				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getGroups_2022());
 				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getGroups_2021());
@@ -100,7 +140,25 @@ public class LocalServer {
 				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getGroups_2013());
 				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getGroups_2012());
 				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getGroups_2011());
-			} else {
+			}
+
+			else if (requestPath.contains("values")) {
+				Gson gson = new Gson();
+				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getColors_2022());
+				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getColors_2021());
+				else if (requestPath.contains("2020")) responseBody = gson.toJson(colorHandler.getColors_2020());
+				else if (requestPath.contains("2019")) responseBody = gson.toJson(colorHandler.getColors_2019());
+				else if (requestPath.contains("2018")) responseBody = gson.toJson(colorHandler.getColors_2018());
+				else if (requestPath.contains("2017")) responseBody = gson.toJson(colorHandler.getColors_2017());
+				else if (requestPath.contains("2016")) responseBody = gson.toJson(colorHandler.getColors_2016());
+				else if (requestPath.contains("2015")) responseBody = gson.toJson(colorHandler.getColors_2015());
+				else if (requestPath.contains("2014")) responseBody = gson.toJson(colorHandler.getColors_2014());
+				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getColors_2013());
+				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getColors_2012());
+				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getColors_2011());
+			}
+
+			else {
 				return;
 			}
 

@@ -24,24 +24,23 @@ public class ColorHandler extends Constants {
 	final private Map<String, Integer> groups_2020 = new HashMap<>();
 	final private Map<String, Integer> groups_2021 = new HashMap<>();
 	final private Map<String, Integer> groups_2022 = new HashMap<>();
+	final private Map<String, Integer> colors_2011 = new HashMap<>();
+	final private Map<String, Integer> colors_2012 = new HashMap<>();
+	final private Map<String, Integer> colors_2013 = new HashMap<>();
+	final private Map<String, Integer> colors_2014 = new HashMap<>();
+	final private Map<String, Integer> colors_2015 = new HashMap<>();
+	final private Map<String, Integer> colors_2016 = new HashMap<>();
+	final private Map<String, Integer> colors_2017 = new HashMap<>();
+	final private Map<String, Integer> colors_2018 = new HashMap<>();
+	final private Map<String, Integer> colors_2019 = new HashMap<>();
+	final private Map<String, Integer> colors_2020 = new HashMap<>();
+	final private Map<String, Integer> colors_2021 = new HashMap<>();
+	final private Map<String, Integer> colors_2022 = new HashMap<>();
 
 	public ColorHandler() throws SQLException, ClassNotFoundException {
 		String query = "SELECT * FROM " + CRIMES_TABLE + ";";
 		PreparedStatement statement = DatabaseHandler.getInstance().prepareStatement(query);
 		ResultSet result = statement.executeQuery(query);
-
-		Map<String, Integer> colors_2011 = new HashMap<>();
-		Map<String, Integer> colors_2012 = new HashMap<>();
-		Map<String, Integer> colors_2013 = new HashMap<>();
-		Map<String, Integer> colors_2014 = new HashMap<>();
-		Map<String, Integer> colors_2015 = new HashMap<>();
-		Map<String, Integer> colors_2016 = new HashMap<>();
-		Map<String, Integer> colors_2017 = new HashMap<>();
-		Map<String, Integer> colors_2018 = new HashMap<>();
-		Map<String, Integer> colors_2019 = new HashMap<>();
-		Map<String, Integer> colors_2020 = new HashMap<>();
-		Map<String, Integer> colors_2021 = new HashMap<>();
-		Map<String, Integer> colors_2022 = new HashMap<>();
 
 		while (result.next()) {
 			colors_2011.put(result.getString(CRIMES_REGIONS), result.getInt(CRIMES_2011));
@@ -57,14 +56,6 @@ public class ColorHandler extends Constants {
 			colors_2021.put(result.getString(CRIMES_REGIONS), result.getInt(CRIMES_2021));
 			colors_2022.put(result.getString(CRIMES_REGIONS), result.getInt(CRIMES_2022));
 		}
-
-		// Разделение максимального значения на количество групп
-		// maxRegionValue = 0;
-		// for (Integer value : colors.values()) {
-		// if (value > maxRegionValue) {
-		// maxRegionValue = value;
-		// }
-		// }
 
 		int groupSize = maxRegionValue / groupCount;
 
@@ -177,5 +168,53 @@ public class ColorHandler extends Constants {
 
 	public Map<String, Integer> getGroups_2022() {
 		return groups_2022;
+	}
+
+	public Map<String, Integer> getColors_2011() {
+		return colors_2011;
+	}
+
+	public Map<String, Integer> getColors_2012() {
+		return colors_2012;
+	}
+
+	public Map<String, Integer> getColors_2013() {
+		return colors_2013;
+	}
+
+	public Map<String, Integer> getColors_2014() {
+		return colors_2014;
+	}
+
+	public Map<String, Integer> getColors_2015() {
+		return colors_2015;
+	}
+
+	public Map<String, Integer> getColors_2016() {
+		return colors_2016;
+	}
+
+	public Map<String, Integer> getColors_2017() {
+		return colors_2017;
+	}
+
+	public Map<String, Integer> getColors_2018() {
+		return colors_2018;
+	}
+
+	public Map<String, Integer> getColors_2019() {
+		return colors_2019;
+	}
+
+	public Map<String, Integer> getColors_2020() {
+		return colors_2020;
+	}
+
+	public Map<String, Integer> getColors_2021() {
+		return colors_2021;
+	}
+
+	public Map<String, Integer> getColors_2022() {
+		return colors_2022;
 	}
 }

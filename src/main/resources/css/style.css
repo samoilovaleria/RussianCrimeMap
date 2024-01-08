@@ -144,7 +144,7 @@ h1 {
 .map-legend {
 	position: absolute;
 	left: 95vw;
-	top: 120vw;
+	top: 125vw;
 	display: flex;
 	justify-content: flex-end;
 	align-items: center;
@@ -167,20 +167,20 @@ h1 {
 }
 
 .selector {
-    left: 50%;
+    left: 48%;
     padding: 8px;
     border-radius: 10px;
     font-size: calc(var(--index) * 0.8);
     background-color: #f1f1f1;
     position: absolute;
-    top: 120vw;
+    top: 125vw;
     font-family: jupiteroid-regular;
 }
 
 .map-description {
 	position: absolute;
 	left: 5vw;
-	top: 170vw;
+	top: 175vw;
 }
 
 .map-description h2 {
@@ -190,4 +190,86 @@ h1 {
 
 .map-description p {
 	font-size: calc(var(--index) * 0.7);
+}
+
+// Стили для формы фидбека
+.feedback-form {
+    margin: 0 auto;
+    max-width: 600px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.feedback-form label {
+    display: block;
+    margin-bottom: 10px;
+    font-size: calc(var(--index) * 0.8);
+}
+
+.feedback-form input[type="text"],
+.feedback-form textarea {
+    width: 100%;
+    padding: 10px;
+    font-family: jupiteroid-regular;
+    font-size: calc(var(--index) * 0.8);
+    border: 1px solid var(--color-border);
+    border-radius: 5px;
+}
+
+.feedback-form input[type="submit"] {
+    margin-top: 10px;
+    background-color: var(--color-border);
+    color: var(--color-text);
+    border: none;
+    border-radius: 5px;
+    font-size: calc(var(--index) * 0.8);
+    padding: 10px 20px;
+}
+
+.feedback-form input[type="submit"]:hover {
+    background-color: #555555;
+    cursor: pointer;
+}
+
+.feedback-form input[type="submit"]:focus {
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.feedback-form .form-image {
+    margin-left: 20px;
+    flex-shrink: 0;
+    width: 300px; /* Здесь задайте желаемую ширину для картинки */
+    height: auto;
+}
+
+.story-form {
+    margin-top: 5vh;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-form-img {
+    max-width: calc(var(--index) * 24);
+}
+
+.label-text {
+    font-size: calc(var(--index) * 1);
+    font-family: disketMono-bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.story-text {
+    font-size: calc(var(--index) * 0.7);
+    font-family: disketMono-bold;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
 }

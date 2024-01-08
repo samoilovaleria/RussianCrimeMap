@@ -1,13 +1,19 @@
 const pathElements = document.getElementsByClassName('region');
 const colorElements = document.getElementsByClassName('color');
 const nameDisplay = document.getElementById('nameOfRegion');
+const textDisplay = document.getElementById('textOfRegion');
+const nameText = document.getElementById('name');
+const cityText = document.getElementById('city');
+const messageText = document.getElementById('message');
+const storyText = document.getElementById('story-text');
 const groupColors = ['#ffdedb', '#fccec8', '#fabeb6', '#f69f9f', '#f38f8d', '#f07f7b', '#ed6f69', '#dc143c'];
+var year = '2022';
 
 window.onload = async function () {
 	try {
-	let year = "2022";
-		var response = await fetch('/api/colors' + year);
-		var groups = await response.json();
+		var responseColors = await fetch('/api/colors' + year);
+		var groups = await responseColors.json();
+
 		for (let element of pathElements) {
 			element.addEventListener('mouseover', handleMouseOver);
 			element.addEventListener('mouseout', handleMouseOut);
@@ -19,11 +25,13 @@ window.onload = async function () {
 				}
 			}
 		}
+
 		let count = 0;
 		for (let color of colorElements) {
 			color.style.backgroundColor = groupColors[count];
 			count++;
 		}
+
 	} catch (error) {
 		console.error(error);
 	}
@@ -31,10 +39,14 @@ window.onload = async function () {
 
 // Обработка селекта года
 async function readSelectedValue() {
+
 	var selectElement = document.getElementById("year-select");
 	var selectedValue = selectElement.value;
-    var response = await fetch('/api/colors' + selectedValue);
-    var groups = await response.json();
+    year = selectedValue;
+
+	var responseColors = await fetch('/api/colors' + year);
+    var groups = await responseColors.json();
+
     for (let element of pathElements) {
         let id = element.getAttribute('id');
         for (let group in groups) {
@@ -44,10 +56,12 @@ async function readSelectedValue() {
             }
         }
     }
+
 }
 
 // Обработчик события наведения на регион
-function handleMouseOver(event) {
+async function handleMouseOver(event) {
+
 	const id = event.target.getAttribute('id');
 	const region = event.target;
 	region.parentNode.appendChild(region);
@@ -63,18 +77,27 @@ function handleMouseOver(event) {
 	} else if (id === 'Leningrad') {
 		region.style.transform = 'scale(1.002)';
 	} else {
-		region.style.transform = 'scale(1.02)';
+		region.style.transform = 'scale(1.03)';
 	}
 
+
+    var responseValues = await fetch('/api/values' + year);
+    var values = await responseValues.json();
+    let dataText = 'В этот год тут было совершено ' + values[id] + ' преступлений. Если вы хотите узнать более подробную информацию и прочитать истории нажмите на выбранный регион.'
 	let dataName = event.target.getAttribute('data-name');
 	nameDisplay.textContent = dataName;
+	textDisplay.textContent = dataText;
+
 }
 
 // Обработчик события ухода курсора с региона
 function handleMouseOut(event) {
+
 	const region = event.target;
 	region.style.transform = 'scale(1)';
 	nameDisplay.textContent = 'Российская Федерация';
+	textDisplay.textContent = 'Наведитесь на интересующий регион.';
+
 }
 
 // Плавный скролл
@@ -128,4 +151,34 @@ if (ScrollTrigger.isTouch !== 1) {
 		})
 	})
 
+}
+
+// При отправке фидбек формы якорь
+function submitForm(event) {
+    event.preventDefault();
+
+    // Сохраняем текущую позицию прокрутки
+    var scrollPosition = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop;
+
+    var form = event.target;
+    var formData = new FormData(form);
+    var xhr = new XMLHttpRequest();
+    xhr.open(form.method, form.action);
+
+    xhr.onload = function() {
+        if (xhr.status === 200) {
+            // Восстанавливаем позицию прокрутки после перенаправления
+            window.scrollTo(0, scrollPosition);
+
+            window.history.back();
+        }
+    };
+
+    nameText.value = "";
+    cityText.value = "";
+    messageText.value = "";
+//    let textForGratitude = 'Спасибо за то, что поделелись с нами своим мнением!';
+//    storyText.textContent = textForGratitude;
+
+    xhr.send(new URLSearchParams(formData));
 }

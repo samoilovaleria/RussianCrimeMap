@@ -16,5 +16,9 @@ public class Constants {
 	protected static final String CRIMES_2020 = "2020";
 	protected static final String CRIMES_2021 = "2021";
 	protected static final String CRIMES_2022 = "2022";
+	protected static final String FEEDBACK_TABLE = "feedback";
+	protected static final String FEEDBACK_NAME = "name";
+	protected static final String FEEDBACK_CITY = "city";
+	protected static final String FEEDBACK_MESSAGE = "message";
 
 }
