@@ -9,6 +9,7 @@ import handlers.FeedbackHandler;
 
 import java.io.*;
 import java.net.InetSocketAddress;
+import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -75,7 +76,8 @@ public class LocalServer {
 				br.close();
 
 				String formData = sb.toString();
-				String[] formDataArray = formData.split("&");
+				String decodedFormData = URLDecoder.decode(formData, "UTF-8");
+				String[] formDataArray = decodedFormData.split("&");
 				String name = "";
 				String city = "";
 				String message = "";
@@ -93,6 +95,8 @@ public class LocalServer {
 						message = value;
 					}
 				}
+
+				System.out.println(name + " " + city + " " + message);
 
 				FeedbackHandler feedbackHandler = new FeedbackHandler();
 				feedbackHandler.saveFeedback(name, city, message);
@@ -126,7 +130,7 @@ public class LocalServer {
 
 			String responseBody = null;
 
-			if (requestPath.contains("colors")) {
+			if (requestPath.contains("all_colors")) {
 				Gson gson = new Gson();
 				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getGroups_2022());
 				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getGroups_2021());
@@ -142,7 +146,23 @@ public class LocalServer {
 				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getGroups_2011());
 			}
 
-			else if (requestPath.contains("values")) {
+			else if (requestPath.contains("people_colors")) {
+				Gson gson = new Gson();
+				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getPeople_groups_2022());
+				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getPeople_groups_2021());
+				else if (requestPath.contains("2020")) responseBody = gson.toJson(colorHandler.getPeople_groups_2020());
+				else if (requestPath.contains("2019")) responseBody = gson.toJson(colorHandler.getPeople_groups_2019());
+				else if (requestPath.contains("2018")) responseBody = gson.toJson(colorHandler.getPeople_groups_2018());
+				else if (requestPath.contains("2017")) responseBody = gson.toJson(colorHandler.getPeople_groups_2017());
+				else if (requestPath.contains("2016")) responseBody = gson.toJson(colorHandler.getPeople_groups_2016());
+				else if (requestPath.contains("2015")) responseBody = gson.toJson(colorHandler.getPeople_groups_2015());
+				else if (requestPath.contains("2014")) responseBody = gson.toJson(colorHandler.getPeople_groups_2014());
+				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getPeople_groups_2013());
+				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getPeople_groups_2012());
+				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getPeople_groups_2011());
+			}
+
+			else if (requestPath.contains("all_values")) {
 				Gson gson = new Gson();
 				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getColors_2022());
 				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getColors_2021());
@@ -156,6 +176,22 @@ public class LocalServer {
 				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getColors_2013());
 				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getColors_2012());
 				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getColors_2011());
+			}
+
+			else if (requestPath.contains("people_values")) {
+				Gson gson = new Gson();
+				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getPeople_2022());
+				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getPeople_2021());
+				else if (requestPath.contains("2020")) responseBody = gson.toJson(colorHandler.getPeople_2020());
+				else if (requestPath.contains("2019")) responseBody = gson.toJson(colorHandler.getPeople_2019());
+				else if (requestPath.contains("2018")) responseBody = gson.toJson(colorHandler.getPeople_2018());
+				else if (requestPath.contains("2017")) responseBody = gson.toJson(colorHandler.getPeople_2017());
+				else if (requestPath.contains("2016")) responseBody = gson.toJson(colorHandler.getPeople_2016());
+				else if (requestPath.contains("2015")) responseBody = gson.toJson(colorHandler.getPeople_2015());
+				else if (requestPath.contains("2014")) responseBody = gson.toJson(colorHandler.getPeople_2014());
+				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getPeople_2013());
+				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getPeople_2012());
+				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getPeople_2011());
 			}
 
 			else {

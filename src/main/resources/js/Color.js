@@ -6,12 +6,13 @@ const nameText = document.getElementById('name');
 const cityText = document.getElementById('city');
 const messageText = document.getElementById('message');
 const storyText = document.getElementById('story-text');
-const groupColors = ['#ffdedb', '#fccec8', '#fabeb6', '#f69f9f', '#f38f8d', '#f07f7b', '#ed6f69', '#dc143c'];
+var groupColors = ['#ffdedb', '#fccec8', '#fabeb6', '#f69f9f', '#f38f8d', '#f07f7b', '#ed6f69', '#dc143c'];
 var year = '2022';
+var crime = 'all';
 
 window.onload = async function () {
 	try {
-		var responseColors = await fetch('/api/colors' + year);
+		var responseColors = await fetch('/api/' + crime + '_colors' + year);
 		var groups = await responseColors.json();
 
 		for (let element of pathElements) {
@@ -38,13 +39,13 @@ window.onload = async function () {
 };
 
 // Обработка селекта года
-async function readSelectedValue() {
+async function readSelectedYear() {
 
 	var selectElement = document.getElementById("year-select");
 	var selectedValue = selectElement.value;
     year = selectedValue;
 
-	var responseColors = await fetch('/api/colors' + year);
+	var responseColors = await fetch('/api/' + crime + '_colors' + year);
     var groups = await responseColors.json();
 
     for (let element of pathElements) {
@@ -56,6 +57,42 @@ async function readSelectedValue() {
             }
         }
     }
+
+}
+
+// Обработка селекта преступления
+async function readSelectedCrime() {
+
+	var selectElement = document.getElementById("crime-select");
+	var selectedValue = selectElement.value;
+    crime = selectedValue;
+
+	var responseColors = await fetch('/api/' + crime + '_colors' + year);
+    var groups = await responseColors.json();
+
+    if (crime === 'people') {
+            groupColors = ['#dc143c', '#ed6f69', '#f07f7b', '#f38f8d', '#f69f9f', '#fabeb6', '#fccec8', '#ffdedb'];
+        }
+    if (crime === 'all') {
+        groupColors = ['#ffdedb', '#fccec8', '#fabeb6', '#f69f9f', '#f38f8d', '#f07f7b', '#ed6f69', '#dc143c'];
+    }
+
+    for (let element of pathElements) {
+        let id = element.getAttribute('id');
+        for (let group in groups) {
+            if (id.includes(group)) {
+                element.style.fill = groupColors[groups[group] - 1] ?? null;
+                break;
+            }
+        }
+    }
+
+    let count = 0;
+    for (let color of colorElements) {
+        color.style.backgroundColor = groupColors[count];
+        count++;
+    }
+
 
 }
 
@@ -81,9 +118,18 @@ async function handleMouseOver(event) {
 	}
 
 
-    var responseValues = await fetch('/api/values' + year);
+    var responseValues = await fetch('/api/' + crime + '_values' + year);
     var values = await responseValues.json();
-    let dataText = 'В этот год тут было совершено ' + values[id] + ' преступлений. Если вы хотите узнать более подробную информацию и прочитать истории нажмите на выбранный регион.'
+
+    let dataText = '';
+    if (crime === 'people') {
+            dataText = 'В этот год тут было поймано ' + values[id] + '% преступников относительно общего количества преступлений. Если вы хотите узнать более подробную информацию и прочитать истории нажмите на выбранный регион.'
+        }
+
+        if (crime === 'all') {
+            dataText = 'В этот год тут было совершено ' + values[id] + ' преступлений. Если вы хотите узнать более подробную информацию и прочитать истории нажмите на выбранный регион.'
+        }
+
 	let dataName = event.target.getAttribute('data-name');
 	nameDisplay.textContent = dataName;
 	textDisplay.textContent = dataText;
@@ -97,6 +143,9 @@ function handleMouseOut(event) {
 	region.style.transform = 'scale(1)';
 	nameDisplay.textContent = 'Российская Федерация';
 	textDisplay.textContent = 'Наведитесь на интересующий регион.';
+
+    const regionAdygey = document.getElementById('Adygey').target;
+    regionAdygey.parentNode.appendChild(region);
 
 }
 
@@ -177,8 +226,9 @@ function submitForm(event) {
     nameText.value = "";
     cityText.value = "";
     messageText.value = "";
-//    let textForGratitude = 'Спасибо за то, что поделелись с нами своим мнением!';
-//    storyText.textContent = textForGratitude;
+    let textForGratitude = 'Спасибо за то, что поделелись с нами своим мнением!';
+    storyText.textContent = textForGratitude;
 
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded; charset=UTF-8');
     xhr.send(new URLSearchParams(formData));
 }

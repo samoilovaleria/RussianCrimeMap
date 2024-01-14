@@ -9,6 +9,7 @@ public class FeedbackHandler extends Constants{
     public void saveFeedback(String name, String city, String message) {
         try {
             String query = "INSERT INTO " + FEEDBACK_TABLE + " (" + FEEDBACK_NAME + ", " + FEEDBACK_CITY + ", " + FEEDBACK_MESSAGE + ") VALUES (?, ?, ?)";
+            System.out.println(name + " " + city + " " + message);
             PreparedStatement statement = DatabaseHandler.getInstance().prepareStatement(query);
             statement.setString(1, name);
             statement.setString(2, city);

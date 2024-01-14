@@ -61,8 +61,6 @@
 				</div>
 			</div>
 
-			<h2 class="label-text">Динамическая карта</h2>
-
 			<div class="map">
 				<div class="map-object">
 					<img src="../resources/img/svgBG.jpg">
@@ -250,20 +248,30 @@
 					</svg>
 				</div>
 
-				<select id="year-select" class="selector" onchange="readSelectedValue()">
-					<option value="2022">2022</option>
-					<option value="2021">2021</option>
-					<option value="2020">2020</option>
-					<option value="2019">2019</option>
-					<option value="2018">2018</option>
-					<option value="2017">2017</option>
-					<option value="2016">2016</option>
-					<option value="2015">2015</option>
-					<option value="2014">2014</option>
-					<option value="2013">2013</option>
-					<option value="2012">2012</option>
-					<option value="2011">2011</option>
-				</select>
+				<h2 class="label-text map-text">Динамическая карта</h2>
+
+				<div class="selectors">
+
+					<select id="year-select" class="year-selector" onchange="readSelectedYear()">
+						<option value="2022">2022</option>
+						<option value="2021">2021</option>
+						<option value="2020">2020</option>
+						<option value="2019">2019</option>
+						<option value="2018">2018</option>
+						<option value="2017">2017</option>
+						<option value="2016">2016</option>
+						<option value="2015">2015</option>
+						<option value="2014">2014</option>
+						<option value="2013">2013</option>
+						<option value="2012">2012</option>
+						<option value="2011">2011</option>
+					</select>
+
+					<select id="crime-select" class="crime-selector" onchange="readSelectedCrime()">
+						<option value="all">Все преступления</option>
+						<option value="people">Пойманные преступники</option>
+					</select>
+				</div>
 
 				<div class="map-legend">
 					<div class="color-bar">
@@ -283,14 +291,15 @@
 					<h2 id="nameOfRegion">Российская Федерация</h2>
 					<p id="textOfRegion">Наведитесь на интересующий регион.</p>
 				</div>
+
 			</div>
 
 			<h2 class="label-text">Отправьте свою историю</h2>
-			<p class="story-text"> </p>
+			<p id="story-text"></p>
 
 			<div class="story-form">
 				<div>
-					<form class="feedback-form" action="/feedback" method="post" onsubmit="submitForm(event)">
+					<form class="feedback-form" action="/feedback" method="post" accept-charset="UTF-8" onsubmit="submitForm(event)">
 						<label for="name">Ваше имя:</label>
 						<input type="text" id="name" name="name" required><br><br>
 
@@ -302,9 +311,6 @@
 
 						<input type="submit" value="Отправить">
 					</form>
-				</div>
-				<div>
-					<img class="story-form-img" src="../resources/img/imgSearch.png" alt="imgSearch">
 				</div>
 			</div>
 
