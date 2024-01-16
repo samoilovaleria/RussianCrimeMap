@@ -2,7 +2,7 @@ package hidden;
 
 public class Constants {
 
-	protected static final String CRIMES_TABLE = "2022_crimes";
+	protected static final String CRIMES_TABLE = "crimes_all";
 	protected static final String CRIMES_REGIONS = "regions";
 	protected static final String CRIMES_2011 = "2011";
 	protected static final String CRIMES_2012 = "2012";

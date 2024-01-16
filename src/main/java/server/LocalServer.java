@@ -16,6 +16,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.SQLException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.google.gson.*;
 
@@ -132,66 +134,46 @@ public class LocalServer {
 
 			if (requestPath.contains("all_colors")) {
 				Gson gson = new Gson();
-				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getGroups_2022());
-				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getGroups_2021());
-				else if (requestPath.contains("2020")) responseBody = gson.toJson(colorHandler.getGroups_2020());
-				else if (requestPath.contains("2019")) responseBody = gson.toJson(colorHandler.getGroups_2019());
-				else if (requestPath.contains("2018")) responseBody = gson.toJson(colorHandler.getGroups_2018());
-				else if (requestPath.contains("2017")) responseBody = gson.toJson(colorHandler.getGroups_2017());
-				else if (requestPath.contains("2016")) responseBody = gson.toJson(colorHandler.getGroups_2016());
-				else if (requestPath.contains("2015")) responseBody = gson.toJson(colorHandler.getGroups_2015());
-				else if (requestPath.contains("2014")) responseBody = gson.toJson(colorHandler.getGroups_2014());
-				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getGroups_2013());
-				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getGroups_2012());
-				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getGroups_2011());
+				Matcher matcher = Pattern.compile("\\d{4}").matcher(requestPath);
+				if (matcher.find()) {
+					String year = matcher.group();
+					responseBody = gson.toJson(colorHandler.getGroupsByYear(year));
+				} else {
+					responseBody = "{}";
+				}
 			}
 
 			else if (requestPath.contains("people_colors")) {
 				Gson gson = new Gson();
-				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getPeople_groups_2022());
-				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getPeople_groups_2021());
-				else if (requestPath.contains("2020")) responseBody = gson.toJson(colorHandler.getPeople_groups_2020());
-				else if (requestPath.contains("2019")) responseBody = gson.toJson(colorHandler.getPeople_groups_2019());
-				else if (requestPath.contains("2018")) responseBody = gson.toJson(colorHandler.getPeople_groups_2018());
-				else if (requestPath.contains("2017")) responseBody = gson.toJson(colorHandler.getPeople_groups_2017());
-				else if (requestPath.contains("2016")) responseBody = gson.toJson(colorHandler.getPeople_groups_2016());
-				else if (requestPath.contains("2015")) responseBody = gson.toJson(colorHandler.getPeople_groups_2015());
-				else if (requestPath.contains("2014")) responseBody = gson.toJson(colorHandler.getPeople_groups_2014());
-				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getPeople_groups_2013());
-				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getPeople_groups_2012());
-				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getPeople_groups_2011());
+				Matcher matcher = Pattern.compile("\\d{4}").matcher(requestPath);
+				if (matcher.find()) {
+					String year = matcher.group();
+					responseBody = gson.toJson(colorHandler.getPeopleGroupsByYear(year));
+				} else {
+					responseBody = "{}";
+				}
 			}
 
 			else if (requestPath.contains("all_values")) {
 				Gson gson = new Gson();
-				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getColors_2022());
-				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getColors_2021());
-				else if (requestPath.contains("2020")) responseBody = gson.toJson(colorHandler.getColors_2020());
-				else if (requestPath.contains("2019")) responseBody = gson.toJson(colorHandler.getColors_2019());
-				else if (requestPath.contains("2018")) responseBody = gson.toJson(colorHandler.getColors_2018());
-				else if (requestPath.contains("2017")) responseBody = gson.toJson(colorHandler.getColors_2017());
-				else if (requestPath.contains("2016")) responseBody = gson.toJson(colorHandler.getColors_2016());
-				else if (requestPath.contains("2015")) responseBody = gson.toJson(colorHandler.getColors_2015());
-				else if (requestPath.contains("2014")) responseBody = gson.toJson(colorHandler.getColors_2014());
-				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getColors_2013());
-				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getColors_2012());
-				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getColors_2011());
+				Matcher matcher = Pattern.compile("\\d{4}").matcher(requestPath);
+				if (matcher.find()) {
+					String year = matcher.group();
+					responseBody = gson.toJson(colorHandler.getColorsByYear(year));
+				} else {
+					responseBody = "{}";
+				}
 			}
 
 			else if (requestPath.contains("people_values")) {
 				Gson gson = new Gson();
-				if (requestPath.contains("2022")) responseBody = gson.toJson(colorHandler.getPeople_2022());
-				else if (requestPath.contains("2021")) responseBody = gson.toJson(colorHandler.getPeople_2021());
-				else if (requestPath.contains("2020")) responseBody = gson.toJson(colorHandler.getPeople_2020());
-				else if (requestPath.contains("2019")) responseBody = gson.toJson(colorHandler.getPeople_2019());
-				else if (requestPath.contains("2018")) responseBody = gson.toJson(colorHandler.getPeople_2018());
-				else if (requestPath.contains("2017")) responseBody = gson.toJson(colorHandler.getPeople_2017());
-				else if (requestPath.contains("2016")) responseBody = gson.toJson(colorHandler.getPeople_2016());
-				else if (requestPath.contains("2015")) responseBody = gson.toJson(colorHandler.getPeople_2015());
-				else if (requestPath.contains("2014")) responseBody = gson.toJson(colorHandler.getPeople_2014());
-				else if (requestPath.contains("2013")) responseBody = gson.toJson(colorHandler.getPeople_2013());
-				else if (requestPath.contains("2012")) responseBody = gson.toJson(colorHandler.getPeople_2012());
-				else if (requestPath.contains("2011")) responseBody = gson.toJson(colorHandler.getPeople_2011());
+				Matcher matcher = Pattern.compile("\\d{4}").matcher(requestPath);
+				if (matcher.find()) {
+					String year = matcher.group();
+					responseBody = gson.toJson(colorHandler.getPeopleByYear(year));
+				} else {
+					responseBody = "{}";
+				}
 			}
 
 			else {
